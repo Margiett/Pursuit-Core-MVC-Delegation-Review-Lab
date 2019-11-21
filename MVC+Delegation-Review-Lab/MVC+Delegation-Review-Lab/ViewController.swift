@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
-    var currentFrontSize1 = CGFloat(20) {
+    var currentFrontSize1 = CGFloat (20){
         didSet {
             tableView.reloadData()
         }
@@ -34,8 +34,22 @@ class ViewController: UIViewController {
     func loadData() {
         didSetMovieVC = Movie.allMovies
     }
+    
+    //MARK: unwind Segue Button
+    @IBAction func unwindSegueButton(segue: UIStoryboardSegue) {
+    print("unwindSegue")
 
+    guard let movieDetailTable = segue.source as? MovieDetailTableView else {
+    return
+    }
+        
+        currentFrontSize1 = movieDetailTable.currentFontSize//17
+      
 }
+    
+}
+
+
 extension ViewController: UITableViewDataSource {
     //MARK: number of Rows in sections
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -47,19 +61,22 @@ extension ViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath)
        
         let movieCellForRow = didSetMovieVC[indexPath.row]
-        //textlabel.text = the subtitle in the cell on the storyboard
+        
     
         
         //MARK: title Font
         //textLabel represent the title in the cell
         cell.textLabel?.text = movieCellForRow.name
         cell.textLabel?.font = UIFont(name: "Times New Roman", size: currentFrontSize1)
+        
+        
         //MARK: Subtitle Font
         // this represents the subtitle in the cell
         cell.detailTextLabel?.text = movieCellForRow.year.description
-        cell.detailTextLabel?.font = UIFont(name: "Time New Roman", size: currentFrontSize1)
+        cell.detailTextLabel?.font = UIFont(name: "Times New Roman", size:  currentFrontSize1 )
         
         return cell
     }
 }
+
 
