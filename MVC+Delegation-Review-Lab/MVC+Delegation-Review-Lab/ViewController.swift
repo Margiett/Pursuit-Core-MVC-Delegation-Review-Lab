@@ -29,10 +29,22 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         loadData()
         tableView.dataSource = self
+    
+    
         // Do any additional setup after loading the view.
     }
     func loadData() {
         didSetMovieVC = Movie.allMovies
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let movieDVC = segue.destination as? MovieDetailTableView else { fatalError("did not segue. failed to downcast as MovieDVC") }
+        
+        movieDVC.currentFontSize = currentFrontSize1
+        
+        //Step 4 - set the delegate of movieDVC to this view controller. since this happens, this view controller must conform to our custom delegate
+        // this listence for calls on the delegate og the movieDetailVC
+        movieDVC.delegate = self
     }
     
     //MARK: unwind Segue Button
@@ -43,9 +55,21 @@ class ViewController: UIViewController {
     return
     }
         
-        currentFrontSize1 = movieDetailTable.currentFontSize//17
+        currentFrontSize1 = movieDetailTable.currentFontSize!//17
       
 }
+    
+}
+
+//Step 5 - conform your vc to your customDelegate, and use the required functions
+extension ViewController: FontSizeDelegate{
+    
+    //Step 6 - use the func you created, alongside its "stored" parameters
+    func fontSizeChanged(_ viewController: MovieDetailTableView, _ fontSize: CGFloat) {
+        
+        self.currentFrontSize1 = fontSize
+    }
+    
     
 }
 
